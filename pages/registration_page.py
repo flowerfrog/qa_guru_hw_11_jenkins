@@ -1,4 +1,7 @@
 import os
+
+import allure
+
 import resource
 
 from selene import browser, be, have, command
@@ -7,6 +10,8 @@ from selene import browser, be, have, command
 class RegistrationPage:
     def open(self):
         browser.open('/automation-practice-form')
+        browser.execute_script('document.querySelector("#fixedban").remove()')
+        browser.element('footer').execute_script('element.remove()')
         return self
 
     def register(self, user):
@@ -27,7 +32,6 @@ class RegistrationPage:
         browser.element('#currentAddress').should(be.visible).type(user.current_address)
         browser.element("#react-select-3-input").should(be.visible).type(user.state).press_enter()
         browser.element("#react-select-4-input").should(be.visible).type(user.city).press_enter()
-        browser.element('//footer').perform(command.js.remove)
         browser.element("#submit").should(be.visible).click()
         return self
 
