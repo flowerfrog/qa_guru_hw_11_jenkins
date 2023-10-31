@@ -1,7 +1,14 @@
+import allure
+from selene import browser
+
 from data.users import User
 from pages.registration_page import RegistrationPage
+from utils import attach
 
 
+@allure.tag("web")
+@allure.label("owner", "flowerfrog")
+@allure.feature("Регистрация пользователя")
 def test_complete_practice_form():
     registration_page = RegistrationPage()
 
@@ -23,21 +30,18 @@ def test_complete_practice_form():
         city='Delhi'
     )
 
-    registration_page.open()
+    with allure.step("Открываем страницу регистрации"):
+        registration_page.open()
+        attach.add_screenshot(browser)
 
     # WHEN
-    registration_page.register(user)
+    with allure.step("Заполняем и отправляем регистрационную форму"):
+        registration_page.register(user)
+        attach.add_screenshot(browser)
 
     # THEN
-    registration_page.user_should_registered(user)
-
-
-
-
-
-
-
-
-
-
-
+    with allure.step("Проверяем, что пользователь зарегистрирован"):
+        registration_page.user_should_registered(user)
+    attach.add_logs(browser)
+    attach.add_html(browser)
+    attach.add_video(browser)
